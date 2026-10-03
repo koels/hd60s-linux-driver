@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$0")"
 VER=0.1
 pacman -S --needed --noconfirm dkms
-rmmod hd60s 2>/dev/null || true
+if lsmod | grep -q "^hd60s " && ! rmmod hd60s; then echo "hd60s is in use (OBS or PipeWire); reboot to load the new build"; fi
 dkms remove hd60s/$VER --all 2>/dev/null || true
 rm -rf /usr/src/hd60s-$VER
 mkdir -p /usr/src/hd60s-$VER
